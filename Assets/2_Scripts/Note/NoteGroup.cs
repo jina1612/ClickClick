@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class NoteGroup : MonoBehaviour
@@ -14,7 +12,15 @@ public class NoteGroup : MonoBehaviour
     [SerializeField] private Sprite normalBtnSprite;
     [SerializeField] private Sprite selectBtnSrite;
     [SerializeField] private Animation anim;
-    
+    [SerializeField] private KeyCode keyCode;
+    public KeyCode KeyCode
+    {
+        get
+        {
+            return keyCode;
+        }
+    }
+
 
     private List<Note> noteList = new List<Note>();
 
@@ -23,37 +29,44 @@ public class NoteGroup : MonoBehaviour
         anim.Play();
         for (int i = 0; i < noteMaxNum; i++)
         {
-            GameObject noteGameObj = Instantiate(notePrefab);
-            noteGameObj.transform.SetParent(noteSpwan.transform);
-            noteGameObj.transform.localPosition = Vector3.up * noteList.Count * noteGap;
-
-            Note note = noteGameObj.GetComponent<Note>();
-
-            noteList.Add(note);
+            SpawnNote(true);
         }
     }
 
-    void Update()
-
-
+    private void SpawnNote(bool isApple)
     {
-        
+        GameObject noteGameObj = Instantiate(notePrefab);
+        noteGameObj.transform.SetParent(noteSpwan.transform);
+        noteGameObj.transform.localPosition = Vector3.up * noteList.Count * noteGap;
+        Note note = noteGameObj.GetComponent<Note>();
+        note.SetSprite(isApple);
+
+        noteList.Add(note);
     }
 
-    public void OnInput(bool isSelect)
+    public void OnInput(bool isApple)
     {
-        if (isSelect)
-        {
-            anim.Play();
-            btnSpriteRenderer.sprite = selectBtnSrite;
-        }
+        //노트 삭제
+        Note delNote = noteList[0];
+        delNote.Destory();
+        noteList.RemoveAt(0);
 
+        for (int i = 0; i < noteList.Count; i++)
+            noteList[i].transform.localPosition = Vector3.up * i * noteGap;
 
+        //생성
+        SpawnNote(isApple);
+
+        anim.Play();
+        btnSpriteRenderer.sprite = selectBtnSrite;
     }
     public void callAniDone()
     {
         btnSpriteRenderer.sprite = normalBtnSprite;
     }
+
 }
-   
+
+
+
 
