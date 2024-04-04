@@ -12,7 +12,7 @@ public class NoteGroup : MonoBehaviour
     [SerializeField] private Sprite normalBtnSprite;
     [SerializeField] private Sprite selectBtnSrite;
     [SerializeField] private Animation anim;
-    [SerializeField] private KeyCode keyCode;
+    private KeyCode keyCode;
     public KeyCode KeyCode
     {
         get
@@ -24,16 +24,16 @@ public class NoteGroup : MonoBehaviour
 
     private List<Note> noteList = new List<Note>();
 
-    void Start()
+    public void Create(KeyCode keyCode)
     {
         anim.Play();
         for (int i = 0; i < noteMaxNum; i++)
         {
-            SpawnNote(true);
+            CreateNote(true);
         }
     }
 
-    private void SpawnNote(bool isApple)
+    private void CreateNote(bool isApple)
     {
         GameObject noteGameObj = Instantiate(notePrefab);
         noteGameObj.transform.SetParent(noteSpwan.transform);
@@ -48,14 +48,14 @@ public class NoteGroup : MonoBehaviour
     {
         //노트 삭제
         Note delNote = noteList[0];
-        delNote.Destory();
+        delNote.DeleteNote();
         noteList.RemoveAt(0);
 
         for (int i = 0; i < noteList.Count; i++)
             noteList[i].transform.localPosition = Vector3.up * i * noteGap;
 
         //생성
-        SpawnNote(isApple);
+        CreateNote(isApple);
 
         anim.Play();
         btnSpriteRenderer.sprite = selectBtnSrite;
