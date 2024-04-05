@@ -12,7 +12,7 @@ public class NoteGroup : MonoBehaviour
     [SerializeField] private Sprite normalBtnSprite;
     [SerializeField] private Sprite selectBtnSrite;
     [SerializeField] private Animation anim;
-    private KeyCode keyCode;
+    [SerializeField] private KeyCode keyCode;
     public KeyCode KeyCode
     {
         get
@@ -24,7 +24,7 @@ public class NoteGroup : MonoBehaviour
 
     private List<Note> noteList = new List<Note>();
 
-    public void Create(KeyCode keyCode)
+    void Start()
     {
         anim.Play();
         for (int i = 0; i < noteMaxNum; i++)
