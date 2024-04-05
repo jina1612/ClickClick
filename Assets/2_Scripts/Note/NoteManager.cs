@@ -1,22 +1,43 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class NoteManager : MonoBehaviour
 {
+    [SerializeField] private KeyCode[] initKeyCodeArr;
+    [SerializeField] private GameObject noteGroupRrefab;
+    [SerializeField] private float noteGroupGap = 1f;
+
     public static NoteManager Instance;
-
-
-    [SerializeField] private NoteGroup[] noteGroupArr;
+    private List<NoteGroup> noteGroupList = new List<NoteGroup>();
 
     private void Awake()
     {
         Instance = this;
     }
-    public void OnInput(KeyCode keyCode)
+    public void Create()
     {
-        int randld = Random.Range(0, noteGroupArr.Length);
+        foreach (KeyCode keyCode in initKeyCodeArr)
+        {
+            CreateNoteGroup(keyCode);
+        }
+    }
+    private void CreateNoteGroup(KeyCode keyCode)
+    {
+        GameObject noteGroupObj = Instantiate(noteGroupRrefab);
+        noteGroupObj.transform.position = Vector3.right * noteGroupList.Count * noteGroupGap;
+
+        NoteGroup noteGroup = noteGroupObj.GetComponent<NoteGroup>();
+        noteGroup.Create(keyCode);
+
+        noteGroupList.Add(noteGroup);
+    }
+
+    public void Onlnput(KeyCode keyCode)
+    {
+        int randld = Random.Range(0, noteGroupList.Count);
         bool isApple = randld == 0 ? true : false;
 
-        foreach (NoteGroup noteGroup in noteGroupArr)
+        foreach (NoteGroup noteGroup in noteGroupList)
         {
             if (keyCode == noteGroup.KeyCode)
             {
@@ -24,5 +45,4 @@ public class NoteManager : MonoBehaviour
             }
         }
     }
-
 }

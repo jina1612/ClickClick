@@ -1,29 +1,30 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
     public static InputManager Instance;
+    private List<KeyCode> KeyCodeList = new List<KeyCode>();
 
     private void Awake()
     {
         Instance = this;
     }
 
+    public void AddKeyCode(KeyCode keyCode)
+    {
+        KeyCodeList.Add(keyCode);
+    }
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        foreach (KeyCode keyCode in KeyCodeList)
         {
-            NoteManager.Instance.OnInput(KeyCode.A);
-        }
+            if (Input.GetKeyDown(keyCode))
+            {
+                NoteManager.Instance.Onlnput(keyCode);
+            }
 
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            NoteManager.Instance.OnInput(KeyCode.S);
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            NoteManager.Instance.OnInput(KeyCode.D);
         }
     }
 }

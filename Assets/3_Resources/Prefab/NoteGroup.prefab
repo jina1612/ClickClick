@@ -56,6 +56,7 @@ MonoBehaviour:
   btnSpriteRenderer: {fileID: 5294334641289523087}
   normalBtnSprite: {fileID: 21300000, guid: d7b61edc0b017174095824530172ad1f, type: 3}
   selectBtnSrite: {fileID: 21300000, guid: 4fce3950ae84d9c46a154454c898bf17, type: 3}
+  keyCodeTmp: {fileID: 5191405304657382280}
   anim: {fileID: 3042248263684924125}
 --- !u!111 &3042248263684924125
 Animation:
