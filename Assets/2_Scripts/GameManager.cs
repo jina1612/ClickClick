@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -6,9 +8,11 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     [SerializeField] private int maxScore;
+    [SerializeField] private int noteGroupCreatScore = 10;
     private int score;
+    private int nextNoteGroupUnlockCnt;
 
-
+    [SerializeField] private float maxTime = 30f;
     private void Awake()
     {
         Instance = this;
@@ -18,12 +22,35 @@ public class GameManager : MonoBehaviour
     {
         UIManager.Instance.OnScoreChange(this.score, maxScore);
         NoteManager.Instance.Create();
+
+        StartCoroutine(TimerCouroutine());
     }
-    internal void CalculateScore(bool isApple)
+
+    IEnumerator TimerCouroutine()
     {
-        if (isApple)
+        float currenTime = 0f;
+
+        while (currenTime < maxTime)
+        {
+            currenTime += Time.deltaTime;
+            UIManager.Instance.OnTimerChange(currenTime, maxTime);
+            yield return null;  
+        }
+
+        Debug.Log("Game Over...........");
+    }
+    internal void CalculateScore(bool isCorrect)
+    {
+        if (isCorrect)
         {
             score++;
+            nextNoteGroupUnlockCnt++;
+
+            if (noteGroupCreatScore <= nextNoteGroupUnlockCnt)
+            {
+                nextNoteGroupUnlockCnt = 0;
+                NoteManager.Instance.CreateNoteGroup();
+            }
         }
         else
         {

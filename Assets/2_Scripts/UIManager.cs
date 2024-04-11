@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +9,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Image scorelmg;
     [SerializeField] private TextMeshProUGUI scoreTmp;
 
+    [SerializeField] private Image timerlmg;
+    [SerializeField] private TextMeshProUGUI timerTmp;
+
     private void Awake()
     {
         Instance = this;
@@ -20,5 +21,11 @@ public class UIManager : MonoBehaviour
     {
         scoreTmp.text = $"{currentScore}/{maxScore}";
         scorelmg.fillAmount = (float)currentScore / maxScore;
+    }
+
+    public void OnTimerChange(float currentTimer, float maxTimer)
+    {
+        timerTmp.text = $"{currentTimer:N1} / {maxTimer:N1}";
+        timerlmg.fillAmount = (float)currentTimer / maxTimer;
     }
 }
