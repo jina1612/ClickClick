@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Note : MonoBehaviour
@@ -15,11 +12,20 @@ public class Note : MonoBehaviour
     {
         this.isApple = isApple;
         spriteRenderer.sprite = isApple ? appleSprite : blueberrySprite;
+
     }
 
     public void Destory()
     {
-       GameObject.Destroy(gameObject);
+        GameObject.Destroy(gameObject);
+        if (isApple)
+        {
+            SoundManager.Instance.Sound(0);
+        }
+        if (!isApple)
+        {
+            SoundManager.Instance.Sound(1);
+        }
     }
 
     public void DeleteNote()
@@ -29,6 +35,6 @@ public class Note : MonoBehaviour
     }
 }
 
-  
 
- 
+
+

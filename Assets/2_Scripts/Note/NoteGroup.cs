@@ -64,6 +64,7 @@ public class NoteGroup : MonoBehaviour
 
         anim.Play();
         btnSpriteRenderer.sprite = selectBtnSrite;
+
     }
     public void callAniDone()
     {
