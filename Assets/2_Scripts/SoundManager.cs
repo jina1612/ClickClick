@@ -19,8 +19,5 @@ public class SoundManager : MonoBehaviour
         audioSource.Play();
     }
 
-    private void Start()
-    {
-        SoundManager.Instance.Sound(1);
-    }
+   
 }

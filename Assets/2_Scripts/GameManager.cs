@@ -8,25 +8,13 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private int maxScore;
     [SerializeField] private int noteGroupCreatScore = 10;
-    [SerializeField] private GameObject gameClearObj;
-    [SerializeField] private GameObject gameOverObj;
-
+    
 
     private int score;
     private int nextNoteGroupUnlockCnt;
 
     [SerializeField] private float maxTime = 30f;
 
-    public bool IsGameDone
-    {
-        get
-        {
-            if (gameClearObj.activeSelf || gameOverObj.activeSelf)
-                return true;
-            else
-                return false;
-        }
-    }
 
     private void Awake()
     {
@@ -37,9 +25,6 @@ public class GameManager : MonoBehaviour
     {
         UIManager.Instance.OnScoreChange(this.score, maxScore);
         NoteManager.Instance.Create();
-
-        gameClearObj.SetActive(false);
-        gameOverObj.SetActive(false);
 
         StartCoroutine(TimerCouroutine());
     }
@@ -54,15 +39,8 @@ public class GameManager : MonoBehaviour
             currenTime += Time.deltaTime;
             UIManager.Instance.OnTimerChange(currenTime, maxTime);
             yield return null;
-
-            if (IsGameDone)
-            {
-                yield break;
-            }
         }
-
-        //Game Over
-        gameOverObj.SetActive(true);
+        SceneManager.LoadScene("GameOverScene");
     }
     internal void CalculateScore(bool isCorrect)
     {
@@ -79,9 +57,7 @@ public class GameManager : MonoBehaviour
 
             if (maxScore <= score)
             {
-                //Game Clear
-                gameClearObj.SetActive(true);
-
+                SceneManager.LoadScene("Clear");
             }
         }
         else

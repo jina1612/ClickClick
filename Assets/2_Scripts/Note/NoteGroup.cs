@@ -14,6 +14,7 @@ public class NoteGroup : MonoBehaviour
     [SerializeField] private Sprite selectBtnSrite;
     [SerializeField] private TextMeshPro keyCodeTmp;
     [SerializeField] private Animation anim;
+    private AudioSource rlend;
     private KeyCode keyCode;
     public KeyCode KeyCode
     {
@@ -64,8 +65,11 @@ public class NoteGroup : MonoBehaviour
 
         anim.Play();
         btnSpriteRenderer.sprite = selectBtnSrite;
+        AudioSource rlend = GetComponent<AudioSource>();
+        rlend.Play();
 
     }
+
     public void callAniDone()
     {
         btnSpriteRenderer.sprite = normalBtnSprite;

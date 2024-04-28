@@ -18,10 +18,6 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.Instance.IsGameDone)
-        {
-            return;
-        }
 
         foreach (KeyCode keyCode in KeyCodeList)
         {
