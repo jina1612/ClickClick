@@ -7,49 +7,91 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     [SerializeField] private int maxScore;
-    [SerializeField] private int noteGroupCreatScore = 10;
-    
+    [SerializeField] private int noteGroupCreateScore = 10;
+    private bool isGameClear = false;
+    private bool isGameOver = false;
+
 
     private int score;
     private int nextNoteGroupUnlockCnt;
 
     [SerializeField] private float maxTime = 30f;
+    public float myTime;
+    public float minTime;
 
+    public bool IsGameClear()
+    {
+        return isGameClear;
+    }
 
-    private void Awake()
+    public bool IsGameOver()
+    {
+        return isGameOver;
+    }
+
+    public bool IsGameDone
+    {
+        get
+        {
+            if (isGameClear || isGameOver)
+            {
+                minTime = PlayerPrefs.GetFloat("minTime", 1000f);
+                if (minTime >= myTime)
+                {
+                    minTime = myTime;
+                    PlayerPrefs.SetFloat("minTime", minTime);
+                }
+                SceneManager.LoadScene("Close");
+                return true;
+            }
+            else
+                return false;
+        }
+    }
+
+     private void Awake()
     {
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
     {
-        UIManager.Instance.OnScoreChange(this.score, maxScore);
+        UIManager.Instance.OnScoreChange(score, maxScore);
         NoteManager.Instance.Create();
 
-        StartCoroutine(TimerCouroutine());
+        StartCoroutine(TimerCoroutine());
     }
 
 
-    IEnumerator TimerCouroutine()
+    IEnumerator TimerCoroutine()
     {
-        float currenTime = 0f;
+        float currentTime = 0f;
 
-        while (currenTime < maxTime)
+        while (currentTime < maxTime)
         {
-            currenTime += Time.deltaTime;
-            UIManager.Instance.OnTimerChange(currenTime, maxTime);
+            currentTime += Time.deltaTime;
+            myTime = currentTime;
+            UIManager.Instance.OnTimerChange(currentTime, maxTime);
             yield return null;
+
+            if (IsGameDone)
+            {
+                yield break;
+            }
         }
-        SceneManager.LoadScene("GameOverScene");
+
+        isGameOver = true;
     }
-    internal void CalculateScore(bool isCorrect)
+
+    public void CalculateScore(bool isApple)
     {
-        if (isCorrect)
+        if (isApple)
         {
             score++;
             nextNoteGroupUnlockCnt++;
 
-            if (noteGroupCreatScore <= nextNoteGroupUnlockCnt)
+            if (noteGroupCreateScore <= nextNoteGroupUnlockCnt)
             {
                 nextNoteGroupUnlockCnt = 0;
                 NoteManager.Instance.CreateNoteGroup();
@@ -57,20 +99,26 @@ public class GameManager : MonoBehaviour
 
             if (maxScore <= score)
             {
-                SceneManager.LoadScene("Clear");
+                isGameClear = true;
             }
+
         }
         else
         {
             score--;
         }
-
         UIManager.Instance.OnScoreChange(score, maxScore);
     }
 
     public void Restart()
     {
-        Debug.Log("Game Restart!...........");
+        Debug.Log("Game Restart!................");
         SceneManager.LoadScene(0);
     }
+
 }
+
+
+
+
+
