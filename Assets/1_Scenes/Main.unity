@@ -153,8 +153,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxScore: 30
-  noteGroupCreatScore: 10
-  maxTime: 60
+  noteGroupCreateScore: 10
+  maxTime: 100
+  myTime: 0
+  minTime: 0
 --- !u!4 &314710037
 Transform:
   m_ObjectHideFlags: 0

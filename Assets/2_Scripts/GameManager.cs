@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
                     minTime = myTime;
                     PlayerPrefs.SetFloat("minTime", minTime);
                 }
-                SceneManager.LoadScene("Close");
+                
                 return true;
             }
             else
@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-     private void Awake()
+    private void Awake()
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
@@ -77,11 +77,14 @@ public class GameManager : MonoBehaviour
 
             if (IsGameDone)
             {
+                Debug.Log("s");
+                SceneManager.LoadScene("Clear");
                 yield break;
             }
         }
 
         isGameOver = true;
+        SceneManager.LoadScene("GameOverScene");
     }
 
     public void CalculateScore(bool isApple)
