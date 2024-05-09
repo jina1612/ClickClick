@@ -152,9 +152,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e23b2493af8fe841b905ef635604fb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxScore: 30
+  maxScore: 100
   noteGroupCreateScore: 10
-  maxTime: 100
+  maxTime: 30
   myTime: 0
   minTime: 0
 --- !u!4 &314710037
